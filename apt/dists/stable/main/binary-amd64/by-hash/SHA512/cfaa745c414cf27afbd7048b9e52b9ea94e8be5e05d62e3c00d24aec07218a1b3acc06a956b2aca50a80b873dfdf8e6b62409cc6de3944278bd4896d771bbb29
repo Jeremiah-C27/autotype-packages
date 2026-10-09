@@ -1,0 +1,20 @@
+Package: autotype
+Version: 1.5.0-1
+Architecture: amd64
+Maintainer: Jeremiah-C27 <170050075+Jeremiah-C27@users.noreply.github.com>
+Installed-Size: 8178
+Depends: libc6 (>= 2.35), libgcc-s1, libegl1, libgl1, libx11-6, libx11-xcb1, libxcursor1, libxfixes3, libxi6, libxrandr2, libxkbcommon0, libxkbcommon-x11-0, libwayland-client0, libwayland-cursor0, libwayland-egl1
+Recommends: xdg-desktop-portal
+Filename: pool/main/a/autotype/autotype_1.5.0-1_amd64.deb
+Size: 2945040
+MD5sum: b41bc8989f14e6445d0b722615bc56a9
+SHA1: 9e534707a3e59a24aa702e9b3e58181ca39d44df
+SHA256: 8e1c55c996eeadfeb48c214183e067587e3c27ad85fe1d8d22f35c08c5236071
+Section: utils
+Priority: optional
+Homepage: https://www.npmjs.com/package/autotype-rs
+Description: Type text with a countdown or custom global shortcuts
+ Compact Rust desktop app with instant Start, custom Start/Stop shortcuts,
+ adjustable delay and dark/light themes. Supports X11 and Wayland;
+ Wayland requires desktop keyboard-control permission.
+

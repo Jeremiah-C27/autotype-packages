@@ -1,0 +1,21 @@
+Valid-Until: Thu, 07 Jan 2027 07:04:03 GMT
+Acquire-By-Hash: yes
+Architectures: amd64
+Codename: stable
+Components: main
+Date: Fri, 09 Oct 2026 07:04:03 +0000
+Label: Autotype
+Origin: Autotype
+Suite: stable
+MD5Sum:
+ d35751fa6f0f10f146fa149bd5d47c2c              979 main/binary-amd64/Packages
+ b1bd67fe428866aa47a57b62d8d94c19              624 main/binary-amd64/Packages.gz
+SHA1:
+ 1c96e0e0ea6c398311e74e3138fab881a8e0e5d7              979 main/binary-amd64/Packages
+ 7b8adcdfe8901b20cbf6784062eb2015289ec598              624 main/binary-amd64/Packages.gz
+SHA256:
+ 9edce04ba5d9a8cd94c674e2b9b71764b473e8f8d7dc6d9cdc8163c0206707e8              979 main/binary-amd64/Packages
+ b0e0387007203c4381f360c0eaf45fb3c7628c498e2ad1ab8906a039ad1a47db              624 main/binary-amd64/Packages.gz
+SHA512:
+ cfaa745c414cf27afbd7048b9e52b9ea94e8be5e05d62e3c00d24aec07218a1b3acc06a956b2aca50a80b873dfdf8e6b62409cc6de3944278bd4896d771bbb29              979 main/binary-amd64/Packages
+ 408258719c4ea14e0442b13af7f44fdd8946ffdd0a0e03d1848d1a6fbda4b8cc2b3295eb0714de0a4817c13a73303902745e76a6c23dfac39cd9df9bf2cf3694              624 main/binary-amd64/Packages.gz

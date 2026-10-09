@@ -1,0 +1,33 @@
+name: Verify Windows winget installation
+on:
+  workflow_dispatch:
+  release:
+    types: [published]
+permissions:
+  contents: read
+jobs:
+  install:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install and validate winget
+        shell: pwsh
+        run: |
+          Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery
+          Repair-WinGetPackageManager -AllUsers -Force
+          $winget = (Get-Command winget -ErrorAction Stop).Source
+          $version = (Get-Content version.txt).Trim()
+          $manifest = "winget/manifests/j/JeremiahC27/Autotype/$version"
+          & $winget validate $manifest --disable-interactivity
+          if ($LASTEXITCODE -ne 0) { throw "Manifest validation failed" }
+          & $winget settings --enable LocalManifestFiles
+          if ($LASTEXITCODE -ne 0) { throw "Could not enable local manifests" }
+          & $winget install --manifest $manifest --scope user --accept-source-agreements --accept-package-agreements --disable-interactivity
+          if ($LASTEXITCODE -ne 0) { throw "Portable install failed" }
+          $env:PATH = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
+          $actual = & autotype --version
+          if ($actual.Trim() -ne "autotype $version") { throw "Installed version mismatch: $actual" }
+          & $winget list --id JeremiahC27.Autotype --exact --accept-source-agreements --disable-interactivity
+          if ($LASTEXITCODE -ne 0) { throw "Installed package was not registered" }
+          & $winget uninstall --id JeremiahC27.Autotype --exact --disable-interactivity
+          if ($LASTEXITCODE -ne 0) { throw "Portable uninstall failed" }

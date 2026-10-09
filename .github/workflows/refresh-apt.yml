@@ -1,0 +1,61 @@
+# Copy to the public downloads repository's .github/workflows/refresh-apt.yml.
+name: Refresh signed apt metadata
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 4 1 * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: apt-publication
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-22.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y apt-utils dpkg-dev gnupg
+      - name: Import signing key without logging private material
+        env:
+          APT_SIGNING_KEY_BASE64: ${{ secrets.APT_SIGNING_KEY_BASE64 }}
+        run: |
+          python3 - <<'PY'
+          import base64, os, pathlib, subprocess, tempfile
+          home = pathlib.Path(os.environ['RUNNER_TEMP']) / 'autotype-gnupg'
+          home.mkdir(mode=0o700)
+          descriptor, name = tempfile.mkstemp(dir=os.environ['RUNNER_TEMP'])
+          try:
+              with os.fdopen(descriptor, 'wb') as file:
+                  file.write(base64.b64decode(os.environ['APT_SIGNING_KEY_BASE64'], validate=True))
+              subprocess.run(['gpg', '--batch', '--homedir', str(home), '--import', name], check=True)
+          finally:
+              pathlib.Path(name).unlink(missing_ok=True)
+          PY
+      - name: Refresh signatures and expiry
+        env:
+          APT_SIGNING_KEY_FINGERPRINT: ${{ vars.APT_SIGNING_KEY_FINGERPRINT }}
+        run: python3 scripts/build-apt-repo.py --output apt --gnupg-home "$RUNNER_TEMP/autotype-gnupg" --signing-key "$APT_SIGNING_KEY_FINGERPRINT"
+      - name: Commit refreshed metadata
+        run: |
+          git add apt
+          if ! git diff --cached --quiet; then
+            git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com commit -m 'Refresh signed apt metadata'
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Deploy signed feed
+        id: deployment
+        uses: actions/deploy-pages@v4
+      - name: Remove runner key material
+        if: always()
+        run: |
+          gpgconf --homedir "$RUNNER_TEMP/autotype-gnupg" --kill gpg-agent || true
+          rm -rf "$RUNNER_TEMP/autotype-gnupg"

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Autotype downloads</title>
+<style>body{max-width:760px;margin:64px auto;padding:0 24px;background:#141821;color:#e8edf7;font:16px/1.6 system-ui}h1{font-size:36px}a{color:#91b5ff}pre{padding:18px;background:#222938;border-radius:10px;overflow:auto;white-space:pre-wrap}small{color:#b3bccd}</style>
+<h1>Autotype</h1><p>A compact typing app for Windows and Linux, with custom Start/Stop shortcuts, instant typing, adjustable delay and dark/light themes.</p>
+<p><a href="https://github.com/Jeremiah-C27/autotype-packages/releases/latest">Download Windows or Linux packages</a> · <a href="https://github.com/Jeremiah-C27/autotype-packages#readme">Installation guide</a></p>
+<h2>Debian / Ubuntu</h2><p>Add the signed apt feed once, then use your usual package updates.</p>
+<pre>sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://jeremiah-c27.github.io/autotype-packages/apt/autotype-archive-keyring.gpg | sudo tee /etc/apt/keyrings/autotype.gpg &gt;/dev/null
+sudo chmod 0644 /etc/apt/keyrings/autotype.gpg
+echo 'deb [arch=amd64 signed-by=/etc/apt/keyrings/autotype.gpg] https://jeremiah-c27.github.io/autotype-packages/apt/ stable main' | sudo tee /etc/apt/sources.list.d/autotype.list &gt;/dev/null
+sudo apt update
+sudo apt install autotype</pre>
+<p><small>Ubuntu 22.04+ / Debian 12+, amd64. <a href="apt/key-fingerprint.txt">Signing-key fingerprint</a>. Wayland needs desktop keyboard-control and shortcut permissions.</small></p>
+<h2>Windows</h2><p>The portable executable works now. The winget catalog command will become available after Microsoft accepts the community submission:</p>
+<pre>winget install --id JeremiahC27.Autotype --exact</pre>
+<p><small>Windows x64. The installation guide also covers local winget manifests while review is pending.</small></p></html>

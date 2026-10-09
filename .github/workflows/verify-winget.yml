@@ -26,8 +26,11 @@ jobs:
           & $winget install --manifest $manifest --scope user --accept-source-agreements --accept-package-agreements --disable-interactivity
           if ($LASTEXITCODE -ne 0) { throw "Portable install failed" }
           $env:PATH = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
-          $installed = & $winget list --id JeremiahC27.Autotype --exact --accept-source-agreements --disable-interactivity
-          if ($LASTEXITCODE -ne 0 -or ($installed -join "`n") -notmatch [regex]::Escape($version)) { throw "Registered version mismatch: $installed" }
+          $entries = @(Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*' | Where-Object { $_.WinGetPackageIdentifier -eq 'JeremiahC27.Autotype' })
+          if ($entries.Count -ne 1) { throw "Portable package registration missing" }
+          $entry = $entries[0]
+          if ($entry.DisplayVersion -ne $version -or $entry.DisplayName -ne 'Autotype' -or $entry.Publisher -ne 'Jeremiah-C27') { throw "Portable package metadata mismatch" }
+          Write-Host "Verified portable registration: $($entry.DisplayName) $($entry.DisplayVersion)"
           $native = (Get-Command autotype -ErrorAction Stop).Source
           $app = Start-Process -FilePath $native -PassThru
           try {
@@ -44,5 +47,6 @@ jobs:
             $app.Refresh()
             if (-not $app.HasExited) { Stop-Process -Id $app.Id -Force }
           }
-          & $winget uninstall --id JeremiahC27.Autotype --exact --disable-interactivity
+          & $winget uninstall --product-code $entry.PSChildName --source winget --disable-interactivity
           if ($LASTEXITCODE -ne 0) { throw "Portable uninstall failed" }
+          if (Test-Path $native) { throw "Portable alias was not removed" }

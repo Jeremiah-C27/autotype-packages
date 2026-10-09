@@ -32,7 +32,10 @@ jobs:
           if ($entry.DisplayVersion -ne $version -or $entry.DisplayName -ne 'Autotype' -or $entry.Publisher -ne 'Jeremiah-C27') { throw "Portable package metadata mismatch" }
           Write-Host "Verified portable registration: $($entry.DisplayName) $($entry.DisplayVersion)"
           $native = (Get-Command autotype -ErrorAction Stop).Source
-          $app = Start-Process -FilePath $native -PassThru
+          $launch = [System.Diagnostics.ProcessStartInfo]::new()
+          $launch.FileName = $native
+          $launch.UseShellExecute = $false
+          $app = [System.Diagnostics.Process]::Start($launch)
           try {
             for ($attempt = 0; $attempt -lt 50; $attempt++) {
               Start-Sleep -Milliseconds 200

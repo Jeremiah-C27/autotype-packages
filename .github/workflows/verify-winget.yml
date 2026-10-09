@@ -25,8 +25,12 @@ jobs:
           & $winget install --manifest $manifest --scope user --accept-source-agreements --accept-package-agreements --disable-interactivity
           if ($LASTEXITCODE -ne 0) { throw "Portable install failed" }
           $env:PATH = [Environment]::GetEnvironmentVariable('Path', 'Machine') + ';' + [Environment]::GetEnvironmentVariable('Path', 'User')
-          $actual = & autotype --version
-          if ($actual.Trim() -ne "autotype $version") { throw "Installed version mismatch: $actual" }
+          $native = (Get-Command autotype -ErrorAction Stop).Source
+          $output = Join-Path $env:RUNNER_TEMP 'autotype-version.txt'
+          $process = Start-Process -FilePath $native -ArgumentList '--version' -Wait -PassThru -RedirectStandardOutput $output
+          if ($process.ExitCode -ne 0) { throw "Installed executable version check failed" }
+          $actual = (Get-Content $output -Raw).Trim()
+          if ($actual -ne "autotype $version") { throw "Installed version mismatch: $actual" }
           & $winget list --id JeremiahC27.Autotype --exact --accept-source-agreements --disable-interactivity
           if ($LASTEXITCODE -ne 0) { throw "Installed package was not registered" }
           & $winget uninstall --id JeremiahC27.Autotype --exact --disable-interactivity

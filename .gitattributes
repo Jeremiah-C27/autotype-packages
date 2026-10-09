@@ -1,0 +1,2 @@
+# Signed metadata and content-addressed apt indexes must preserve exact bytes.
+apt/** -text whitespace=-blank-at-eof

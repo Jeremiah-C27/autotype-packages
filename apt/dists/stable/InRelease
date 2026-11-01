@@ -1,12 +1,12 @@
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA256
 
-Valid-Until: Thu, 07 Jan 2027 07:07:31 GMT
+Valid-Until: Sat, 30 Jan 2027 11:18:05 GMT
 Acquire-By-Hash: yes
 Architectures: amd64
 Codename: stable
 Components: main
-Date: Fri, 09 Oct 2026 07:07:31 +0000
+Date: Sun, 01 Nov 2026 11:18:05 +0000
 Label: Autotype
 Origin: Autotype
 Suite: stable
@@ -24,8 +24,8 @@ SHA512:
  5001a68b5cce2dc26527b54281a3d1c431fae2dac28ef13a03279e6d7e87cd3b3295e62fbe48e3093b7733fd258ff3a88fcb92c891ba0b8b7124c62a47747022              624 main/binary-amd64/Packages.gz
 -----BEGIN PGP SIGNATURE-----
 
-iHUEARYIAB0WIQTXgAySIH957WneizHPdZYS7bP9JAUCasiSswAKCRDPdZYS7bP9
-JAJbAQCaocYVBG8HiqqxmagYDmTOse750C5uTs1/tii6BdaXLgEAhs3OCtJeo2Hd
-h2EiciusWxJvMy882umayMhP2P2FxA0=
-=zrDJ
+iHUEARYIAB0WIQTXgAySIH957WneizHPdZYS7bP9JAUCaucf7QAKCRDPdZYS7bP9
+JM4oAQC7WflXUFIWb5jNPVOEUe3JienzNlMxUtlhAIv5oFWhmQEAnQKt/KuxweJN
+LcibeX5mCgZzaywMbKG8u6iITi+R5Q8=
+=PP8u
 -----END PGP SIGNATURE-----
